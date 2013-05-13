@@ -7,8 +7,7 @@
 
 <?php include('includes/js_restaurantFinder_app_scripts.html.php'); ?>
 
-<!-- RestraurantFinder Tests -->
-<script type="text/javascript" src="js/Tests/FinderApp/App.Locations.spec.js"></script>
+<?php include('includes/js_test_scripts.html.php'); ?>
 
 <script type="text/javascript">
   /**
