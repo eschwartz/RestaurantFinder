@@ -1,2 +1,2 @@
 <!-- RestaurantFinder App -->
-<script type="text/javascript" src="js/FinderApp/App.Locations.js"></script>
+<script type="text/javascript" src="js/FinderApp/App.Location.js"></script>
