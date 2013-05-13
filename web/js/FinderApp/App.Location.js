@@ -1,7 +1,5 @@
-var App = (function() {
-  var ThisApp = {};
-
-  ThisApp.Location = Backbone.GoogleMaps.Location.extend({
+(function(App) {
+  App.Location = Backbone.GoogleMaps.Location.extend({
     defaults: {
       city: "Minneapolis",
       state: "Minnesota"
@@ -30,6 +28,4 @@ var App = (function() {
       return this;
     }
   });
-
-  return ThisApp;
-})();
+})(window.App);
