@@ -1,15 +1,30 @@
 var App = _.isObject(App)? App :  {};
 
 (function() {
+  var mapOptions = {
+    center: new google.maps.LatLng(44.9796635, -93.2748776),
+    zoom: 12,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+
   App.start = function(options) {
     App.setUIElements();
     App.bindGlobalEvents();
 
     $.publish("app:load:start");
-    var locations = new App.LocationCollection(options.locations);
-    locations.geocode(function() {
-      console.log(locations);
+
+    // Geocode app locations
+    App.locations = new App.LocationCollection(options.locations);
+    App.locations.geocode(function() {
       $.publish("app:load:complete")
+    });
+
+    // Create google map
+    App.map = new google.maps.Map($('#map_canvas')[0], mapOptions);
+
+    App.markersView = new Backbone.GoogleMaps.MarkerCollectionView({
+      collection: App.locations,
+      map: App.map
     });
   }
 
@@ -21,6 +36,7 @@ var App = _.isObject(App)? App :  {};
 
   App.bindGlobalEvents = function() {
     $.subscribe("app:load:start", App.showLoading);
+    $.subscribe("app:load:complete", App.renderMarkers);
     $.subscribe("app:load:complete", App.hideLoading);
   }
 
@@ -30,5 +46,9 @@ var App = _.isObject(App)? App :  {};
 
   App.hideLoading = function() {
     App.ui.appLoading.hide();
+  }
+
+  App.renderMarkers = function() {
+    App.markersView.render();
   }
 })();

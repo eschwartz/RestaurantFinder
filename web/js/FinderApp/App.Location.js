@@ -18,12 +18,22 @@
         dataType: "jsonp",
         data: {
           maxResults: 1,
-          location: "Chipotle, Minneapolis, MN"
+          location: this.getFullAddress()
         },
         success: function(res) {
-          var latLng = res.results[0].locations[0].latLng;
-          self.set('lat', latLng.lat);
-          self.set('lng', latLng.lng)
+          if(res.results[0].locations.length) {
+            var latLng = res.results[0].locations[0].latLng;
+            self.set('lat', latLng.lat);
+            self.set('lng', latLng.lng);
+          }
+          // We have a problem if MapQuest can't find the restaurant
+          // I would need to go back to the client/end-user
+          // and reevaluate the business requirements
+          // For now, will set a static location
+          else {
+            self.set('lat', 44.98 + Math.random()/10);
+            self.set('lng', -93.27 + Math.random()/10);
+          }
 
           callback.apply(self, arguments);
         },
