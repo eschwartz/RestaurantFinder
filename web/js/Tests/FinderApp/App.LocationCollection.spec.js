@@ -70,6 +70,20 @@ describe("Restaurant Finder App LocationCollection", function() {
     expect(self.locationCollection.at(0).get('restaurant_name')).toBe("Latuff's Pizzeria");
   });
 
+  it("should search for matches in cuisine OR restaurant name", function() {
+    self.locationCollection.filterByAny("pizza");
+
+    expect(self.locationCollection.length).toEqual(2);
+    expect(self.locationCollection.at(0).get('restaurant_name')).toBe("Latuff's Pizzeria");
+
+    self.locationCollection.revert();
+
+    self.locationCollection.filterByAny("ch");
+
+    expect(self.locationCollection.length).toEqual(1);
+    expect(self.locationCollection.at(0).get('restaurant_name')).toBe("Chipotle");
+  });
+
   it("should be able to revert to original collection after filtering", function() {
     var collection_orig = _.extend({}, self.locationCollection);
     self.locationCollection.filterByRestaurant("ch");

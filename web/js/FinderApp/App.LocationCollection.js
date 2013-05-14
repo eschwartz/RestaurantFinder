@@ -21,7 +21,7 @@
 
     filterByRestaurant: function(term) {
       var matches = this.filter(function(model) {
-        var pattern = new RegExp(term, "i");
+        var pattern = new RegExp("^" + term, "i");
         return pattern.test(model.get("restaurant_name"));
       });
 
@@ -30,8 +30,17 @@
 
     filterByCuisine: function(term) {
       var matches = this.filter(function(model) {
-        var pattern = new RegExp(term, "i");
+        var pattern = new RegExp("^" + term, "i");
         return pattern.test(model.get("cuisine_type"));
+      });
+
+      this.reset(matches);
+    },
+
+    filterByAny: function(term) {
+      var matches = this.filter(function(model) {
+        var pattern = new RegExp("^" + term, "i");
+        return pattern.test(model.get("cuisine_type")) || pattern.test(model.get("restaurant_name"));
       });
 
       this.reset(matches);
