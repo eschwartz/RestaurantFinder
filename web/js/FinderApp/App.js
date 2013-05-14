@@ -26,11 +26,17 @@ var App = _.isObject(App)? App :  {};
       collection: App.locations,
       map: App.map
     });
+
+    // Create search view
+    App.searchView = new App.SearchView({
+      el: App.ui.searchRegion
+    });
   }
 
   App.setUIElements = function() {
     App.ui = {
-      'appLoading': $('.appLoading')
+      'appLoading'    : $('.appLoading'),
+      'searchRegion'  : $('#searchRegion')
     };
   }
 
@@ -38,6 +44,7 @@ var App = _.isObject(App)? App :  {};
     $.subscribe("app:load:start", App.showLoading);
     $.subscribe("app:load:complete", App.renderMarkers);
     $.subscribe("app:load:complete", App.hideLoading);
+    $.subscribe("search:term", App.search);
   }
 
   App.showLoading = function() {
@@ -50,5 +57,10 @@ var App = _.isObject(App)? App :  {};
 
   App.renderMarkers = function() {
     App.markersView.render();
+  }
+
+  App.search = function(term) {
+    App.locations.revert();
+    App.locations.filterByAny(term);
   }
 })();
