@@ -55,4 +55,32 @@ describe("Restaurant Finder App LocationCollection", function() {
       expect(reds.get('lng')).toBeCloseTo(-93.26667, 4);
     });
   });
+
+  it("should search by matching first letters of restaurant name", function() {
+    self.locationCollection.filterByRestaurant("ch");
+
+    expect(self.locationCollection.length).toEqual(1);
+    expect(self.locationCollection.at(0).get('restaurant_name')).toBe("Chipotle");
+  });
+
+  it("should search by cuisine", function() {
+    self.locationCollection.filterByCuisine("pizza");
+
+    expect(self.locationCollection.length).toEqual(2);
+    expect(self.locationCollection.at(0).get('restaurant_name')).toBe("Latuff's Pizzeria");
+  });
+
+  it("should be able to revert to original collection after filtering", function() {
+    var collection_orig = _.extend({}, self.locationCollection);
+    self.locationCollection.filterByRestaurant("ch");
+    self.locationCollection.revert();
+    expect(self.locationCollection.length).toEqual(3);
+    expect(_.isEqual(self.locationCollection.models, collection_orig.models)).toBe(true);
+
+    // Run twice, to make sure we're saving the original-original colelction
+    self.locationCollection.filterByRestaurant("ch");
+    self.locationCollection.revert();
+    expect(self.locationCollection.length).toEqual(3);
+    expect(_.isEqual(self.locationCollection.models, collection_orig.models)).toBe(true);
+  });
 });

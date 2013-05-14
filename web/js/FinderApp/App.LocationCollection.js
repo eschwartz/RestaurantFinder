@@ -7,6 +7,40 @@
       this.geocoder = new google.maps.Geocoder();
     },
 
+    reset: function() {
+      // Save original collection
+      Backbone.GoogleMaps.LocationCollection.prototype.reset.apply(this, arguments);
+      if(!this.collection_orig) {
+        this.collection_orig = _.extend({}, this);
+      }
+
+      return this;
+    },
+
+    revert: function() {
+      this.reset(this.collection_orig.models);
+
+      return this;
+    },
+
+    filterByRestaurant: function(term) {
+      var matches = this.filter(function(model) {
+        var pattern = new RegExp(term, "i");
+        return pattern.test(model.get("restaurant_name"));
+      });
+
+      this.reset(matches);
+    },
+
+    filterByCuisine: function(term) {
+      var matches = this.filter(function(model) {
+        var pattern = new RegExp(term, "i");
+        return pattern.test(model.get("cuisine_type"));
+      });
+
+      this.reset(matches);
+    },
+
     geocode: function(callback) {
       var self = this;
       var geocodeReqs = [];
