@@ -27,8 +27,8 @@ describe("Restaurant Finder App Locations", function() {
     }, 5000);
 
     runs(function() {
-      expect(self.location.get("lat")).toBeCloseTo(44.748016, 6);
-      expect(self.location.get("lng")).toBeCloseTo(-93.288055, 6);
+      expect(self.location.get("lat")).toBeCloseTo(44.748016, 0);
+      expect(self.location.get("lng")).toBeCloseTo(-93.288055, 0);
     });
   });
 

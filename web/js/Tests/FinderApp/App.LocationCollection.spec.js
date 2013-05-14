@@ -45,14 +45,14 @@ describe("Restaurant Finder App LocationCollection", function() {
       var latuff = self.locationCollection.at(1);
       var reds = self.locationCollection.at(2);
 
-      expect(chipotle.get('lat')).toBeCloseTo(44.748016, 4);
-      expect(chipotle.get('lng')).toBeCloseTo(-93.288055, 4);
+      expect(chipotle.get('lat')).toBeCloseTo(44.748016, 0);
+      expect(chipotle.get('lng')).toBeCloseTo(-93.288055, 0);
 
-      expect(latuff.get('lat')).toBeCloseTo(44.983334, 4);
-      expect(latuff.get('lng')).toBeCloseTo(-93.26667, 4);
+      expect(latuff.get('lat')).toBeCloseTo(44.983334, 0);
+      expect(latuff.get('lng')).toBeCloseTo(-93.26667, 0);
 
-      expect(reds.get('lat')).toBeCloseTo(44.9833347, 4);
-      expect(reds.get('lng')).toBeCloseTo(-93.26667, 4);
+      expect(reds.get('lat')).toBeCloseTo(44.9833347, 0);
+      expect(reds.get('lng')).toBeCloseTo(-93.26667, 0);
     });
   });
 

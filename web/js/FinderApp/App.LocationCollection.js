@@ -3,10 +3,6 @@
   App.LocationCollection = Backbone.GoogleMaps.LocationCollection.extend({
     model: App.Location,
 
-    initialize: function() {
-      this.geocoder = new google.maps.Geocoder();
-    },
-
     reset: function() {
       // Save original collection
       Backbone.GoogleMaps.LocationCollection.prototype.reset.apply(this, arguments);
