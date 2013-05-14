@@ -56,7 +56,6 @@ var App = _.isObject(App)? App :  {};
   }
 
   App.renderMarkers = function() {
-    App.locations.reset([]);
     App.markersView.render();
   }
 
