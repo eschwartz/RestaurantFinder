@@ -1,6 +1,6 @@
 # Restaurant Finder
 
-View online at [http://edanschwartz.com/sandbox/g2p-rf/index.php](http://edanschwartz.com/sandbox/g2p-rf/index.php), or view the Jasmine test spec runner.
+View online at [http://edanschwartz.com/sandbox/g2p-rf/index.php](http://edanschwartz.com/sandbox/g2p-rf/index.php), or view the [Jasmine test spec runner](http://edanschwartz.com/sandbox/g2p-rf/specRunner.php).
 
 ## The Challenge
 
