@@ -22,7 +22,7 @@ var App = _.isObject(App)? App :  {};
     // Create google map
     App.map = new google.maps.Map($('#map_canvas')[0], mapOptions);
 
-    App.markersView = new Backbone.GoogleMaps.MarkerCollectionView({
+    App.markersView = new App.MarkerCollectionView({
       collection: App.locations,
       map: App.map
     });

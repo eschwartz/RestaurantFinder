@@ -53,6 +53,10 @@ function renderJsonFromCSV($filename) {
     });
   </script>
 
+  <script id="template-infoWindow" type="template/html">
+    <h2><%=restaurant_name %></h2><small>Makers of delicious <%=cuisine_type %> food</small>
+  </script>
+
 
 </head>
 <body>
