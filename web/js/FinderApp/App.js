@@ -61,6 +61,8 @@ var App = _.isObject(App)? App :  {};
 
   App.search = function(term) {
     App.locations.revert();
-    App.locations.filterByAny(term);
+    if($.trim(term) !== "") {
+      App.locations.filterByAny(term);
+    }
   }
 })();
