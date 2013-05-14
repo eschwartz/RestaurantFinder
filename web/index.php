@@ -62,7 +62,7 @@ function renderJsonFromCSV($filename) {
 </head>
 <body>
   <div class="loading appLoading hide">
-    <span class="loadingText">Loading...</span>
+    <span class="loadingText">Geocoding location data...</span>
   </div>
 
   <div id="map_canvas" style="width:100%; height:100%"></div>

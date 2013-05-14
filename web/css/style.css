@@ -46,7 +46,7 @@ small {
 
 .overlay {
   position:fixed;
-  background:rgba(255, 255, 255, 0.95);
+  background:rgba(255, 255, 255, 0.96);
   border:1px solid #aaa;
   padding:20px;
   z-index:5;
@@ -54,8 +54,8 @@ small {
 
 #searchRegion {
   width:150px;
-  right:40px;
-  top:40px;
+  right:0;
+  top:0;
 }
 
 
