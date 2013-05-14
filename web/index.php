@@ -38,18 +38,27 @@ function renderJsonFromCSV($filename) {
 <head>
   <title></title>
 
+  <link rel="stylesheet" href="css/style.css" />
+
   <?php include('includes/js_vendor_scripts.html.php'); ?>
 
   <?php include('includes/js_restaurantFinder_app_scripts.html.php'); ?>
 
   <script type="text/javascript">
-    console.log(<?=renderJsonFromCSV(__DIR__."/data/restaurants.csv"); ?>);
+    $(document).ready(function() {
+      var options = {
+        locations: <?=renderJsonFromCSV(__DIR__."/data/restaurants.csv"); ?>
+      }
+      App.start(options);
+    });
   </script>
 
 
 </head>
 <body>
-  <div class="loading hide">Loading...</div>
+  <div class="loading appLoading hide">Loading...</div>
+
+  <p>Geocoding Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>
 
 </body>
 </html>
