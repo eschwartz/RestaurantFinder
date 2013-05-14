@@ -21,7 +21,6 @@
 
     close: function() {
       this.$el.remove();
-      this.model.off();
     },
 
     handleMouseEnter: function() {

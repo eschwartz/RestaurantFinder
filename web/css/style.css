@@ -67,10 +67,9 @@ small {
   list-style:none;
   border-bottom:1px solid #ccc;
   padding:10px;
-  /*cursor: pointer;*/
+  cursor: pointer;
 }
-/*
 .result:hover {
   background:#006;
   color:#fff;
-}*/
+}
