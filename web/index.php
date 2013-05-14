@@ -2,7 +2,7 @@
 ini_set('auto_detect_line_endings',TRUE);
 function renderJsonFromCSV($filename) {
   if(!file_exists($filename)) {
-    throw new \RuntimeException("Unable to load $filename: file does not exists");
+    throw new RuntimeException("Unable to load $filename: file does not exists");
   }
 
   $contents = array();
@@ -12,7 +12,7 @@ function renderJsonFromCSV($filename) {
   // Convert csv to 2d array, for easy processing
   $isFirstRow = true;
   $headerRow = array();
-  while(($data = fgetcsv($handle)) !== FALSE) {
+  while(($data = fgetcsv($handle, 50)) !== FALSE) {
     if($isFirstRow) {
       $headerRow = $data;
       $isFirstRow = false;
@@ -48,7 +48,7 @@ function renderJsonFromCSV($filename) {
   <script type="text/javascript">
     $(document).ready(function() {
       var options = {
-        locations: <?=renderJsonFromCSV(__DIR__."/data/restaurants.csv"); ?>
+        locations: <?=renderJsonFromCSV("data/restaurants.csv"); ?>
       }
       App.start(options);
     });
