@@ -24,11 +24,11 @@ describe("Restaurant Finder App Locations", function() {
 
     waitsFor(function() {
       return geocodeComplete;
-    }, 10000);
+    }, 5000);
 
     runs(function() {
-      expect(self.location.get("lat").toFixed(6)).toBe("44.748016");
-      expect(self.location.get("lng").toFixed(6)).toBe("-93.288055");
+      expect(self.location.get("lat")).toBeCloseTo(44.748016, 6);
+      expect(self.location.get("lng")).toBeCloseTo(-93.288055, 6);
     });
   });
 
