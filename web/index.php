@@ -36,8 +36,9 @@ function renderJsonFromCSV($filename) {
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
+  <title>Restaurant Finder</title>
 
+  <link rel="stylesheet" href="css/reset.css"/>
   <link rel="stylesheet" href="css/style.css" />
 
   <?php include('includes/js_vendor_scripts.html.php'); ?>
@@ -60,11 +61,14 @@ function renderJsonFromCSV($filename) {
 
 </head>
 <body>
-  <div class="loading appLoading hide">Loading...</div>
+  <div class="loading appLoading hide">
+    <span class="loadingText">Loading...</span>
+  </div>
 
-  <div id="map_canvas" style="width:800px; height:600px"></div>
+  <div id="map_canvas" style="width:100%; height:100%"></div>
 
-  <div id="searchRegion">
+  <div id="searchRegion" class="overlay">
+    <h4>Search:</h4>
     <input type="text" id="search" />
     <div id="searchResults"></div>
   </div>

@@ -48,14 +48,15 @@ var App = _.isObject(App)? App :  {};
   }
 
   App.showLoading = function() {
-    App.ui.appLoading.show();
+    App.ui.appLoading.fadeIn();
   }
 
   App.hideLoading = function() {
-    App.ui.appLoading.hide();
+    App.ui.appLoading.delay(1000).fadeOut();
   }
 
   App.renderMarkers = function() {
+    App.locations.reset([]);
     App.markersView.render();
   }
 
