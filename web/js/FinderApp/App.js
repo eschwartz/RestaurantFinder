@@ -54,10 +54,12 @@ var AppView = (function() {
 
     showLoading: function() {
       this.getUI('appLoading').fadeIn();
+      this.getUI('searchRegion').hide();
     },
 
     hideLoading: function() {
       this.getUI('appLoading').delay(1000).fadeOut();
+      this.getUI('searchRegion').delay(1500).fadeIn();
     },
 
     renderMarkers: function() {
