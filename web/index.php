@@ -58,6 +58,11 @@ function renderJsonFromCSV($filename) {
     <h2><%=restaurant_name %></h2><small>Makers of delicious <%=cuisine_type %> food</small>
   </script>
 
+  <script id="template-resultsList" type="template/html">
+    <div class="resultsRegion"></div>
+    <a href="#" class="moreBtn">show more...</a>
+  </script>
+
 
 </head>
 <body>

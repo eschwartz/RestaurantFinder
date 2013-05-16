@@ -23,6 +23,8 @@
 
     limit: 6,
 
+    resultsCount: 0,
+
     setLimit: function(limit) {
       if(
         !_.isNumber(limit) ||
@@ -42,6 +44,10 @@
       this.limit = -1;
     },
 
+    getResultsCount: function() {
+      return this.resultsCount;
+    },
+
     reset: function(models, options) {
       var defaultOptions = {
         useLimit: true
@@ -54,6 +60,7 @@
       // Save original collection
       if(!this.collection_orig) {
         this.collection_orig = _.extend({}, this);
+        this.resultsCount = this.length;
       }
 
       // Set limit
@@ -88,6 +95,8 @@
         return pattern.test(model.get("restaurant_name"));
       });
 
+      this.resultsCount = matches.length;
+
       this.reset(matches, options);
     },
 
@@ -103,6 +112,8 @@
         var pattern = new RegExp("^" + term, "i");
         return pattern.test(model.get("cuisine_type"));
       });
+
+      this.resultsCount = matches.length;
 
       this.reset(matches, options);
     },
@@ -120,15 +131,19 @@
         return pattern.test(model.get("cuisine_type")) || pattern.test(model.get("restaurant_name"));
       });
 
+      this.resultsCount = matches.length;
+
       this.reset(matches, options);
     },
 
     geocode: function(callback) {
       var self = this;
       var geocodeReqs = [];
+      var collection = this.collection_orig || this;
+
       callback = _.isFunction(callback)? callback : function() {};
 
-      this.each(function(location) {
+      collection.each(function(location) {
         var req = new $.Deferred();
         geocodeReqs.push(req);
 

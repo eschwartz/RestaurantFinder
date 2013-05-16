@@ -66,9 +66,9 @@ var AppView = (function() {
 
     search: function(term) {
       this.locations.revert();
-      if($.trim(term) !== "") {
-        this.locations.filterByAny(term);
-      }
+      this.locations.filterByAny(term);
+
+      $.publish("search:complete", { term: term, count: this.locations.getResultsCount() })
     }
   });
 

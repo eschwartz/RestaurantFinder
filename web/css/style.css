@@ -60,8 +60,11 @@ small {
 
 #searchRegion {
   width:150px;
+  max-height: 700px;
   right:0;
   top:0;
+
+  overflow: auto;
 }
 
 
