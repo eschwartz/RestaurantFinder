@@ -1,19 +1,21 @@
 (function(App) {
+  var priv = {
 
-  var getNormalizedSearchOptions = function(arg) {
-    var opts = {};
-    if(_.isUndefined(arg)) {
+    getNormalizedSearchOptions: function(arg) {
+      var opts = {};
+      if(_.isUndefined(arg)) {
+        return opts;
+      }
+      else if(_.isObject(arg)) {
+        _.extend(opts, arg);
+      }
+      else if(_.isNumber(arg)) {
+        // argument is search limit
+        opts['limit'] = arg;
+      }
+
       return opts;
     }
-    else if(_.isObject(arg)) {
-      _.extend(opts, arg);
-    }
-    else if(_.isNumber(arg)) {
-      // argument is search limit
-      opts['limit'] = arg;
-    }
-
-    return opts;
   };
 
   App.LocationCollection = Backbone.GoogleMaps.LocationCollection.extend({
@@ -30,6 +32,10 @@
         throw new Error("LocationCollection limit must be a positive integer.");
       }
       this.limit = limit;
+    },
+
+    getLimit: function() {
+      return this.limit;
     },
 
     removeLimit: function() {
@@ -75,7 +81,7 @@
      * @param options   Options are the same as for reset. As a number, argument will be set to results limit.
      */
     filterByRestaurant: function(term, options) {
-      options = getNormalizedSearchOptions(options);
+      options = priv.getNormalizedSearchOptions(options);
 
       var matches = this.collection_orig.filter(function(model) {
         var pattern = new RegExp("^" + term, "i");
@@ -91,7 +97,7 @@
      * @param options   Options are the same as for reset. As a number, argument will be set to results limit.
      */
     filterByCuisine: function(term, options) {
-      options = getNormalizedSearchOptions(options);
+      options = priv.getNormalizedSearchOptions(options);
 
       var matches = this.collection_orig.filter(function(model) {
         var pattern = new RegExp("^" + term, "i");
@@ -107,7 +113,7 @@
      * @param options   Options are the same as for reset. As a number, argument will be set to results limit.
      */
     filterByAny: function(term, options) {
-      options = getNormalizedSearchOptions(options);
+      options = priv.getNormalizedSearchOptions(options);
 
       var matches = this.collection_orig.filter(function(model) {
         var pattern = new RegExp("^" + term, "i");
