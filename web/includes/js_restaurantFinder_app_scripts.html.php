@@ -1,3 +1,6 @@
+<!-- Utility Scripts -->
+<script type="text/javascript" src="js/Util/Backbone.extention.js"></script>
+
 <!-- RestaurantFinder App -->
 <script type="text/javascript" src="js/FinderApp/App.js"></script>
 <script type="text/javascript" src="js/FinderApp/App.Location.js"></script>
