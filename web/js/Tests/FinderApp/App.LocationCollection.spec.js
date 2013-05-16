@@ -30,6 +30,11 @@ describe("Restaurant Finder App LocationCollection", function() {
 
   it("should geocode all child models, in one fell swoop.", function() {
     var geocodeComplete = false;
+
+    // Remove the limit, so I have access to all original models
+    self.locationCollection.removeLimit();
+    self.locationCollection.revert();
+
     runs(function() {
       self.locationCollection.geocode(function() {
         geocodeComplete = true;
@@ -84,17 +89,97 @@ describe("Restaurant Finder App LocationCollection", function() {
     expect(self.locationCollection.at(0).get('restaurant_name')).toBe("Chipotle");
   });
 
-  it("should be able to revert to original collection after filtering", function() {
-    var collection_orig = _.extend({}, self.locationCollection);
-    self.locationCollection.filterByRestaurant("ch");
-    self.locationCollection.revert();
-    expect(self.locationCollection.length).toEqual(collection_orig.models.length);
-    expect(_.isEqual(self.locationCollection.models, collection_orig.models)).toBe(true);
+  describe("Limiting results", function () {
 
-    // Run twice, to make sure we're saving the original-original colelction
-    self.locationCollection.filterByRestaurant("ch");
-    self.locationCollection.revert();
-    expect(self.locationCollection.length).toEqual(collection_orig.models.length);
-    expect(_.isEqual(self.locationCollection.models, collection_orig.models)).toBe(true);
+    it("should be able to revert to original collection after filtering", function() {
+      var collection_orig = _.extend({}, self.locationCollection);
+      self.locationCollection.filterByRestaurant("ch");
+      self.locationCollection.revert();
+      expect(self.locationCollection.length).toEqual(collection_orig.models.length);
+      expect(_.isEqual(self.locationCollection.models, collection_orig.models)).toBe(true);
+
+      // Run twice, to make sure we're saving the original-original colelction
+      self.locationCollection.filterByRestaurant("ch");
+      self.locationCollection.revert();
+      expect(self.locationCollection.length).toEqual(collection_orig.models.length);
+      expect(_.isEqual(self.locationCollection.models, collection_orig.models)).toBe(true);
+    });
+
+    it("should limit search results to a defined max number", function() {
+      // Search by any
+      self.locationCollection.filterByAny("b", 2);
+      expect(self.locationCollection.length).toBe(2);
+      self.locationCollection.revert();
+
+      // Search by cuisine
+      self.locationCollection.filterByCuisine("pizza", 1);
+      expect(self.locationCollection.length).toBe(1);
+      self.locationCollection.revert();
+
+      // Search by restaurant name
+      self.locationCollection.filterByRestaurant("f", 1);
+      expect(self.locationCollection.length).toBe(1);
+    });
+
+    it("should set a default results limit, or default to 6", function() {
+      // Should start out at limit
+      expect(self.locationCollection.length).toEqual(6);
+
+      // Search should default to limit of 6
+      self.locationCollection.filterByAny("");
+      expect(self.locationCollection.length).toEqual(6);
+      self.locationCollection.revert();
+
+      self.locationCollection.setLimit(2);
+      self.locationCollection.filterByAny("");
+      expect(self.locationCollection.length).toEqual(2);
+    });
+
+    it("should be able to remove the results limit", function() {
+      self.locationCollection.setLimit(2);
+      self.locationCollection.removeLimit();
+      expect(self.locationCollection.length).toBeGreaterThan(2);
+    });
+
+    it("should have option to ignore results limit on reset", function() {
+      var models = self.locationCollection.models;
+      self.locationCollection.setLimit(1);
+
+      // On reset
+      self.locationCollection.reset(models, { useLimit: false });
+      expect(self.locationCollection.length).toBe(models.length);
+    });
+
+    it("should have option to ignore results limit on revert", function() {
+      self.locationCollection.setLimit(1);
+
+      // On revert
+      self.locationCollection.revert({ useLimit: false });
+      expect(self.locationCollection.length).toBeGreaterThan(1);
+    });
+
+    it("should have option to ignore results limit on search by cuisine", function() {
+      self.locationCollection.setLimit(1);
+
+      // On search: cuisine
+      self.locationCollection.filterByCuisine("pizza", { useLimit: false });
+      expect(self.locationCollection.length).toBeGreaterThan(1);
+    });
+
+    it("should have option to ignore results limit on search by restaurant name", function() {
+      self.locationCollection.setLimit(1);
+
+      // On search: restaurant
+      self.locationCollection.filterByRestaurant("h", { useLimit: false });
+      expect(self.locationCollection.length).toBeGreaterThan(1);
+    });
+
+    it("should have option to ignore results limit on search by any", function() {
+      self.locationCollection.setLimit(1);
+
+      // On search: any
+      self.locationCollection.filterByAny("b", { useLimit: false });
+      expect(self.locationCollection.length).toBeGreaterThan(1);
+    });
   });
 });

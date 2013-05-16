@@ -1,49 +1,120 @@
 (function(App) {
 
+  var getNormalizedSearchOptions = function(arg) {
+    var opts = {};
+    if(_.isUndefined(arg)) {
+      return opts;
+    }
+    else if(_.isObject(arg)) {
+      _.extend(opts, arg);
+    }
+    else if(_.isNumber(arg)) {
+      // argument is search limit
+      opts['limit'] = arg;
+    }
+
+    return opts;
+  };
+
   App.LocationCollection = Backbone.GoogleMaps.LocationCollection.extend({
     model: App.Location,
 
-    reset: function() {
+    limit: 6,
+
+    setLimit: function(limit) {
+      if(
+        !_.isNumber(limit) ||
+        limit % 1 !== 0 ||          // Check for integer
+        limit < 1                  // Check for positive number
+      ) {
+        throw new Error("LocationCollection limit must be a positive integer.");
+      }
+      this.limit = limit;
+    },
+
+    removeLimit: function() {
+      this.limit = -1;
+    },
+
+    reset: function(models, options) {
+      var defaultOptions = {
+        useLimit: true
+      };
+
+      options = _.extend({}, defaultOptions, options);
+
+      Backbone.GoogleMaps.LocationCollection.prototype.reset.apply(this, [ models, options ]);
+
       // Save original collection
-      Backbone.GoogleMaps.LocationCollection.prototype.reset.apply(this, arguments);
       if(!this.collection_orig) {
         this.collection_orig = _.extend({}, this);
+      }
+
+      // Set limit
+      if(options.limit) {
+        this.setLimit(options.limit);
+      }
+
+      // Apply limit
+      if(options.useLimit && this.limit > 0 && this.length > this.limit) {
+        this.reset(this.slice(0, this.limit));
       }
 
       return this;
     },
 
-    revert: function() {
-      this.reset(this.collection_orig.models);
+    revert: function(options) {
+      this.reset(this.collection_orig.models, options);
 
       return this;
     },
 
-    filterByRestaurant: function(term) {
-      var matches = this.filter(function(model) {
+    /**
+     *
+     * @param term      Search term. Case insensitive
+     * @param options   Options are the same as for reset. As a number, argument will be set to results limit.
+     */
+    filterByRestaurant: function(term, options) {
+      options = getNormalizedSearchOptions(options);
+
+      var matches = this.collection_orig.filter(function(model) {
         var pattern = new RegExp("^" + term, "i");
         return pattern.test(model.get("restaurant_name"));
       });
 
-      this.reset(matches);
+      this.reset(matches, options);
     },
 
-    filterByCuisine: function(term) {
-      var matches = this.filter(function(model) {
+    /**
+     *
+     * @param term      Search term. Case insensitive
+     * @param options   Options are the same as for reset. As a number, argument will be set to results limit.
+     */
+    filterByCuisine: function(term, options) {
+      options = getNormalizedSearchOptions(options);
+
+      var matches = this.collection_orig.filter(function(model) {
         var pattern = new RegExp("^" + term, "i");
         return pattern.test(model.get("cuisine_type"));
       });
 
-      this.reset(matches);
+      this.reset(matches, options);
     },
 
-    filterByAny: function(term) {
-      var matches = this.filter(function(model) {
+    /**
+     *
+     * @param term      Search term. Case insensitive
+     * @param options   Options are the same as for reset. As a number, argument will be set to results limit.
+     */
+    filterByAny: function(term, options) {
+      options = getNormalizedSearchOptions(options);
+
+      var matches = this.collection_orig.filter(function(model) {
         var pattern = new RegExp("^" + term, "i");
         return pattern.test(model.get("cuisine_type")) || pattern.test(model.get("restaurant_name"));
       });
 
-      this.reset(matches);
+      this.reset(matches, options);
     },
 
     geocode: function(callback) {
@@ -53,7 +124,7 @@
 
       this.each(function(location) {
         var req = new $.Deferred();
-        geocodeReqs.push(req)
+        geocodeReqs.push(req);
 
         location.geocode(function() {
           // Mark this geocode request as complete
