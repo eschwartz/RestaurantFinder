@@ -35,10 +35,16 @@ small {
   color: #fff;
 }
   .loading .loadingText {
-    box-shadow: 0 0 0 1000px rgba(0,0,0,0.6);
+    /* Super-quick overlay view */
+    -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
+
     background: rgba(0,0,0,.9);
     font-size: 24px;
     padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
   }
 
