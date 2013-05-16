@@ -66,6 +66,10 @@ var AppView = (function() {
 
     search: function(term) {
       this.locations.revert();
+
+      // Trim term
+      term = $.trim(term);
+
       this.locations.filterByAny(term);
 
       $.publish("search:complete", { term: term, count: this.locations.getResultsCount() })
