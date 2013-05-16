@@ -1,68 +1,80 @@
-var App = _.isObject(App)? App :  {};
 
-(function() {
+
+var AppView = (function() {
   var mapOptions = {
     center: new google.maps.LatLng(44.9796635, -93.2748776),
     zoom: 12,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
 
-  App.start = function(options) {
-    App.setUIElements();
-    App.bindGlobalEvents();
+  var View = Backbone.View.extend({
 
-    $.publish("app:load:start");
+    ui: {
+      'appLoading'    : '.appLoading',
+      'searchRegion'  : '#searchRegion'
+    },
 
-    // Geocode app locations
-    App.locations = new App.LocationCollection(options.locations);
-    App.locations.geocode(function() {
-      $.publish("app:load:complete")
-    });
+    initialize: function() {
+      _.bindAll(this);
+    },
 
-    // Create google map
-    App.map = new google.maps.Map($('#map_canvas')[0], mapOptions);
+    start: function(options) {
+      this.bindGlobalEvents();
 
-    App.markersView = new App.MarkerCollectionView({
-      collection: App.locations,
-      map: App.map
-    });
+      $.publish("app:load:start");
 
-    // Create search view
-    App.searchView = new App.SearchView({
-      el: App.ui.searchRegion
-    });
-  }
+      // Geocode app locations
+      this.locations = new this.LocationCollection(options.locations);
+      this.locations.geocode(function() {
+        $.publish("app:load:complete")
+      });
 
-  App.setUIElements = function() {
-    App.ui = {
-      'appLoading'    : $('.appLoading'),
-      'searchRegion'  : $('#searchRegion')
-    };
-  }
+      // Create google map
+      this.map = new google.maps.Map($('#map_canvas')[0], mapOptions);
 
-  App.bindGlobalEvents = function() {
-    $.subscribe("app:load:start", App.showLoading);
-    $.subscribe("app:load:complete", App.renderMarkers);
-    $.subscribe("app:load:complete", App.hideLoading);
-    $.subscribe("search:term", App.search);
-  }
+      this.markersView = new this.MarkerCollectionView({
+        collection: this.locations,
+        map: this.map
+      });
 
-  App.showLoading = function() {
-    App.ui.appLoading.fadeIn();
-  }
+      // Create search view
+      this.searchView = new this.SearchView({
+        el: this.getUI('searchRegion')
+      });
+    },
 
-  App.hideLoading = function() {
-    App.ui.appLoading.delay(1000).fadeOut();
-  }
 
-  App.renderMarkers = function() {
-    App.markersView.render();
-  }
 
-  App.search = function(term) {
-    App.locations.revert();
-    if($.trim(term) !== "") {
-      App.locations.filterByAny(term);
+    bindGlobalEvents: function() {
+      $.subscribe("app:load:start", this.showLoading);
+      $.subscribe("app:load:complete", this.renderMarkers);
+      $.subscribe("app:load:complete", this.hideLoading);
+      $.subscribe("search:term", this.search);
+    },
+
+    showLoading: function() {
+      this.getUI('appLoading').fadeIn();
+    },
+
+    hideLoading: function() {
+      this.getUI('appLoading').delay(1000).fadeOut();
+    },
+
+    renderMarkers: function() {
+    this.markersView.render();
+    },
+
+    search: function(term) {
+      this.locations.revert();
+      if($.trim(term) !== "") {
+        this.locations.filterByAny(term);
+      }
     }
-  }
+  });
+
+  return View;
 })();
+
+var App = (App instanceof AppView) ? App :  new AppView({
+  el: $(document)
+});
