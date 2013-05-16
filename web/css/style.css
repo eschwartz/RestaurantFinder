@@ -1,5 +1,12 @@
-html { height: 100% }
-body { height: 100%; margin: 0; padding: 0; }
+html {
+  height: 100%
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 
 h2 {
   padding:10px 0;
@@ -20,6 +27,14 @@ small {
 
 
 #map_canvas { height: 100% }
+
+#mapquest-shoutout {
+  position: absolute;
+  bottom: 30px;
+  right: 0px;
+  background: rgba(255,255,255,0.85);
+  padding: 5px 10px;
+}
 
 .hide {
   display: none;
@@ -61,8 +76,8 @@ small {
 #searchRegion {
   width:150px;
   max-height: 700px;
-  right:0;
-  top:0;
+  left:100px;
+  top:20px;
 
   overflow: auto;
 }

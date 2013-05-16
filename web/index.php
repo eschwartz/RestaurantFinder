@@ -78,7 +78,7 @@ function renderJsonFromCSV($filename) {
     <div id="searchResults"></div>
   </div>
 
-  <p>Geocoding Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>
+  <p id="mapquest-shoutout">Geocoding Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png"></p>
 
 </body>
 </html>
