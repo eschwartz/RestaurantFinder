@@ -3,8 +3,8 @@
 View online at [http://edanschwartz.com/sandbox/g2p-rf/index.php](http://edanschwartz.com/sandbox/g2p-rf/index.php), or view the [Jasmine test spec runner](http://edanschwartz.com/sandbox/g2p-rf/specRunner.php).
 
 ## The Challenge
+Create a search tool to find local restaurants by name or category. A CSV will serve as the data source.
 
-Here is a CSV of our favorite local restaurants. Using this information, create a page that has a place for a user to type. As the user is typing, a list of restaurant names should be shown to the user. The results should include any restaurant whose name starts with the letters the user has typed so far and any restaurant whose cuisine starts with the letters typed so far. The page should be written in PHP and jQuery.
 
 ## The Solution
 
