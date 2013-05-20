@@ -11,6 +11,7 @@ var AppView = (function() {
 
     ui: {
       'appLoading'    : '.appLoading',
+      'loadingText'   : '.appLoading .loadingText',
       'searchRegion'  : '#searchRegion'
     },
 
@@ -19,6 +20,10 @@ var AppView = (function() {
     },
 
     start: function(options) {
+      var geocodeDeferred = $.Deferred();
+      var gMapsDeferred = $.Deferred();
+      var self = this;
+
       this.bindGlobalEvents();
 
       $.publish("app:load:start");
@@ -26,7 +31,7 @@ var AppView = (function() {
       // Geocode app locations
       this.locations = new this.LocationCollection(options.locations);
       this.locations.geocode(function() {
-        $.publish("app:load:complete")
+        geocodeDeferred.resolve();
       });
 
       // Create google map
@@ -35,6 +40,28 @@ var AppView = (function() {
       this.markersView = new this.MarkerCollectionView({
         collection: this.locations,
         map: this.map
+      });
+
+      // Map is done loading
+      google.maps.event.addListenerOnce(this.map, 'tilesloaded', function(){
+        gMapsDeferred.resolve();
+      });
+
+      // When geocoding is done, show "Rendering map"
+      // Map generally takes longer, so this is functional,
+      // But for a more robust loading component, I would
+      // recommend creating an ordered stack of deferreds,
+      // each tied to their own message
+      $.when(geocodeDeferred).done(function() {
+        // delay - so it's not too choppy
+        window.setTimeout(function() {
+          self.setLoadingText("Drawing map...");
+        }, 1000);
+      });
+
+      // All loading-related deferreds are resolved --> let's rock and roll
+      $.when.apply($, [geocodeDeferred, gMapsDeferred]).done(function() {
+        $.publish("app:load:complete");
       });
 
       // Create search view
@@ -55,6 +82,12 @@ var AppView = (function() {
     showLoading: function() {
       this.getUI('appLoading').fadeIn();
       this.getUI('searchRegion').hide();
+    },
+
+    setLoadingText: function(text) {
+      if(!_.isString(text)) { throw Error("Unable to set loading text: not a string"); }
+
+      this.getUI("loadingText").text(text);
     },
 
     hideLoading: function() {
