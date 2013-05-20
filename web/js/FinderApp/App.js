@@ -63,12 +63,10 @@ var AppView = (function() {
     },
 
     renderMarkers: function() {
-    this.markersView.render();
+      this.markersView.render();
     },
 
     search: function(term) {
-      this.locations.revert();
-
       // Trim term
       term = $.trim(term);
 
