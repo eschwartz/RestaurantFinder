@@ -61,7 +61,10 @@ var AppView = (function() {
 
       // All loading-related deferreds are resolved --> let's rock and roll
       $.when.apply($, [geocodeDeferred, gMapsDeferred]).done(function() {
-        $.publish("app:load:complete");
+        // The loading UI is just so pretty -- I want to show it off a little more :)
+        window.setTimeout(function() {
+          $.publish("app:load:complete");
+        }, 1000);
       });
 
       // Create search view
